@@ -12,8 +12,8 @@ import {BlogItemComponent} from './components/blog-item/blog-item.component';
 import {BlogItemTextComponent} from './components/blog-item-text/blog-item-text.component';
 import {BlogItemImageComponent} from './components/blog-item-image/blog-item-image.component';
 import {BlogItemDetailsComponent} from './components/blog-item-details/blog-item-details.component';
-import {HttpClientModule} from '@angular/common/http';
-import {DataService} from "./services/data.service";
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {DataService} from './services/data.service';
 import {SummaryPipe} from './pipes/summary.pipe';
 import {SearchBarComponent} from './shared/search-bar/search-bar.component';
 import {FormsModule} from '@angular/forms';
@@ -21,6 +21,13 @@ import {BlogHomeComponent} from './components/blog-home/blog-home.component';
 import {FilterPipe} from './pipes/filter.pipe';
 import {TextFormatDirective} from './directives/text-format.directive';
 import {SelectizeComponent} from './components/selectize/selectize.component';
+import { NewPostComponent } from './components/new-post/new-post.component';
+import { LoginComponent } from './components/login/login.component';
+import {AuthenticationService} from './services/authentication.service';
+import {HttpIntercepterBasicAuthService} from './services/http/interceptor-auth.service';
+import { BlogDetailComponent } from './components/blog-detail/blog-detail.component';
+import { BlogCreateComponent } from './components/blog-create/blog-create.component';
+import { AddPostComponent } from './components/add-post/add-post.component';
 
 
 @NgModule({
@@ -40,7 +47,12 @@ import {SelectizeComponent} from './components/selectize/selectize.component';
     BlogHomeComponent,
     FilterPipe,
     TextFormatDirective,
-    SelectizeComponent
+    SelectizeComponent,
+    NewPostComponent,
+    LoginComponent,
+    BlogDetailComponent,
+    BlogCreateComponent,
+    AddPostComponent
   ],
   imports: [
     BrowserModule,
@@ -49,8 +61,15 @@ import {SelectizeComponent} from './components/selectize/selectize.component';
     FormsModule,
   ],
   providers: [
-    DataService
+    DataService,
+    AuthenticationService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpIntercepterBasicAuthService,
+      multi: true
+    },
   ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule {

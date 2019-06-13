@@ -15,6 +15,7 @@ postSchema.plugin(uniqueValidator);
 
 const PostModel = mongoose.model('kk-post', postSchema);
 
+
 async function query() {
   const result = await PostModel.find({});
   {
